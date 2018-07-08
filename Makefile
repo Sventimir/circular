@@ -8,14 +8,14 @@ FONTS = /var/data/static/fonts /var/data/static/fonts/Montserrat /var/data/stati
 INSTALL_DIRECTORIES = /var/lib/weles /var/log/weles /var/data /var/run /var/data/static /var/data/static/css /var/data/static/js $(FONTS) /var/data/static/images /var/data/static/images/icons /var/data/static/images/simple_icons /var/lib/eliom /etc/weles
 INSTALL_CONFIG = $(addprefix /etc/weles, /weles.conf)
 INSTALL_STATIC = $(addprefix /var/data/, $(STATIC))
-INSTALL_SCSS = /var/data/static/css/main.css
+INSTALL_CSS = /var/data/static/css/main.css
 
 all: compile
 
 install:$(INSTALL_DIRECTORIES) \
 	$(INSTALL_CONFIG) \
 	$(INSTALL_STATIC) \
-	$(INSTALL_SCSS) \
+	$(INSTALL_CSS) \
 	/var/data/static/weles.js \
 	/var/lib/weles/weles.cma
 
