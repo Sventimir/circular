@@ -61,8 +61,12 @@ let handle () () =
         async main
     ] in
     html
-        (Eliom_tools.F.head ~title:"Graffitti" ~css:[["css"; "main.css"]] ())
-        (body [h1 [pcdata "Graffiti"]; canvas_elt])
+        (Eliom_tools.F.head ~title:"Circular" ~css:[["css"; "main.css"]] ())
+        (body [
+            h1 [pcdata "Circular progress bar"];
+            p [pcdata "(Purely OCaml code compiled to Javascript)"];
+            canvas_elt;
+        ])
     |> return
 
 let _ =
