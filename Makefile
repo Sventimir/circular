@@ -19,7 +19,7 @@ install:$(INSTALL_DIRECTORIES) \
 	/var/data/static/weles.js \
 	/var/lib/weles/weles.cma
 
-compile: /opt/build/weles.js /opt/build/weles.cma /opt/build/css/main.css
+compile: /opt/build/weles.js /opt/build/weles.cma
 
 clean:
 	-rm -f /opt/build/*.cm[ioax] /opt/build/*.cmxa /opt/build/*.cmxs /opt/build/*.o /opt/build/*.a /opt/build/*.annot

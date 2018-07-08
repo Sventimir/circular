@@ -6,7 +6,7 @@ SERVER_PACKAGES := core ppx_let lwt.ppx ppx_sexp_conv ppx_fields_conv ppx_derivi
 
 ## Packages to be linked in the client part
 
-CLIENT_PACKAGES := core_kernel ppx_let lwt.ppx ppx_sexp_conv ppx_fields_conv js_of_ocaml js_of_ocaml.ppx ppx_deriving.std calendar yojson
+CLIENT_PACKAGES := ppx_let lwt.ppx ppx_sexp_conv js_of_ocaml js_of_ocaml.ppx ppx_deriving.std calendar yojson
 
 ## Source files for the server part
 
