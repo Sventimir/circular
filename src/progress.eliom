@@ -25,7 +25,7 @@ module Arc = struct
 
     let pi = 4. *. atan 1.0
 
-    let of_t t = frac t *. 2.0 *. pi -. 0.5 *. pi
+    let of_float f = f *. 2.0 *. pi -. 0.5 *. pi
 
 end
 
@@ -55,14 +55,27 @@ module Signal(Init : PROG_INIT) = struct
         ] in
         React.S.fold ~eq:T.equal ( |> ) (T.init Init.total) e
 
+    let (ox, oy) = Init.origin
+
+    let draw from_arc to_arc =
+        Init.ctx##beginPath;
+        Init.ctx##arc ox oy Init.radius from_arc to_arc Js._false;
+        Init.ctx##stroke
+
     let trace =
-        let (ox, oy) = Init.origin in
-        let handle (prev, next) =
-            Init.ctx##beginPath;
-            Init.ctx##arc ox oy Init.radius (Arc.of_t prev) (Arc.of_t next) Js._false;
-            Init.ctx##stroke
+        let rec exec from_frac to_frac _ =
+            if from_frac < to_frac then
+                let from_arc = Arc.of_float from_frac in
+                let to_arc = Arc.of_float (from_frac +. 0.005) in
+                let callback = Js.wrap_callback (exec (from_frac +. 0.005) to_frac) in
+                draw from_arc to_arc;
+                ignore (Dom_html.window##requestAnimationFrame callback)
         in
-        React.S.diff (fun next prev -> prev, next) progress
+        let handle (from_frac, to_frac) =
+            let callback = Js.wrap_callback (exec from_frac to_frac) in
+            ignore (Dom_html.window##requestAnimationFrame callback)
+        in
+        React.S.diff (fun next prev -> frac prev, frac next) progress
         |> React.E.trace handle
 
 end
