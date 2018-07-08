@@ -57,22 +57,20 @@ module Signal(Init : PROG_INIT) = struct
 
     let (ox, oy) = Init.origin
 
-    let draw from_arc to_arc =
-        Init.ctx##beginPath;
-        Init.ctx##arc ox oy Init.radius from_arc to_arc Js._false;
-        Init.ctx##stroke
+    let rec draw from_frac to_frac _ =
+        if from_frac < to_frac then
+            let next_frac = from_frac +. 0.001 in
+            let from_arc = Arc.of_float from_frac in
+            let to_arc = Arc.of_float next_frac in
+            let callback = Js.wrap_callback (draw next_frac to_frac) in
+            Init.ctx##beginPath;
+            Init.ctx##arc ox oy Init.radius from_arc to_arc Js._false;
+            Init.ctx##stroke;
+            ignore (Dom_html.window##requestAnimationFrame callback)
 
     let trace =
-        let rec exec from_frac to_frac _ =
-            if from_frac < to_frac then
-                let from_arc = Arc.of_float from_frac in
-                let to_arc = Arc.of_float (from_frac +. 0.005) in
-                let callback = Js.wrap_callback (exec (from_frac +. 0.005) to_frac) in
-                draw from_arc to_arc;
-                ignore (Dom_html.window##requestAnimationFrame callback)
-        in
         let handle (from_frac, to_frac) =
-            let callback = Js.wrap_callback (exec from_frac to_frac) in
+            let callback = Js.wrap_callback (draw from_frac to_frac) in
             ignore (Dom_html.window##requestAnimationFrame callback)
         in
         React.S.diff (fun next prev -> frac prev, frac next) progress

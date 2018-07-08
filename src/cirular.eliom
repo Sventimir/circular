@@ -49,7 +49,7 @@ let main () =
     end) in
     let rec loop () =
         Prog.push 5;
-        Lwt_js.sleep 2.0 >>= loop
+        Lwt_js.sleep 0.75 >>= loop
     in
     loop ()
 
